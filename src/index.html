@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PHP and JavaScript CRUD Project: PDO and API</title>
+    <link rel="stylesheet" href="./output.css" />
+  </head>
+  <body class="text-gray-600 font-body bg-gray-100">
+    <!-- Container -->
+    <div class="container mx-auto mt-10 p-3">
+      <!-- Header -->
+      <div class="flex flex-wrap justify-between items-center">
+        <!-- logo -->
+        <div class="flex-1 flex p-3 items-end">
+          <!-- Heroicons.com -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="size-10 text-ocean mr-5"
+          >
+            <path
+              d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z"
+            />
+            <path
+              d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z"
+            />
+          </svg>
+
+          <h1 class="text-xl lg:text-2xl xl:text-3xl">
+            Shoe Shop
+            <span class="hidden md:inline md:text-sm"
+              >: PHP and JavaScript CRUD Project</span
+            >
+          </h1>
+        </div>
+
+        <!-- Hamburger Menu -->
+        <div class="px-4 cursor-pointer lg:hidden" id="burger">
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </div>
+
+        <!-- Menu -->
+        <div class="hidden w-full lg:flex lg:items-center lg:w-auto" id="menu">
+          <nav>
+            <ul class="lg:flex lg:gap-x-4">
+              <li class="py-2 lg:py-0"><a class="" href="#">Home</a></li>
+              <li class="py-2 lg:py-0"><a class="" href="">Products</a></li>
+              <li class="py-2 lg:py-0"><a class="" href="">Login</a></li>
+              <li class="py-2 lg:py-0"><a class="" href="">Profile</a></li>
+              <li class="py-2 lg:py-0"><a class="" href="">Contact</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Hero Section -->
+      <div class="relative w-full h-[500px] mt-4">
+        <!-- รูปภาพพื้นหลัง -->
+        <img
+          src="https://images.unsplash.com/photo-1580835920990-3ed971441447?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          alt="Background"
+          class="absolute top-0 left-0 w-full h-full object-cover"
+        />
+
+        <!-- กล่องข้อความ -->
+        <div class="absolute inset-0 text-white text-center bg-black/30">
+          <div class="h-[500px] flex flex-col items-center justify-end pb-5">
+            <h1 class="mt-5">
+              <span class="text-4xl font-anton text-blue-500 font-bold">
+                We made Shoes
+              </span>
+            </h1>
+            <span class="text-sm tracking-[.12em]">for Your Life</span>
+            <p class="text-sm mt-5 mb-5 w-1/2">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet eius
+              consectetur corrupti architecto. Explicabo fugiat placeat in
+              voluptatum officiis repudiandae ab, harum nihil reiciendis
+              delectus aut porro magni error natus.
+            </p>
+            <a
+              href=""
+              class="py-2 px-4 rounded-lg btn bg-blue-500 text-white hover:bg-yellow-400 hover:text-white"
+              >Read More</a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- Product Section -->
+      <h2 class="text-2xl font-bold pb-2 mt-12 border-gray-200 text-center">
+        Best Shoes
+      </h2>
+      <div id="cards" class="grid lg:grid-cols-4 mt-10 gap-4"></div>
+
+      <!-- Footer -->
+      <div class="text-center mt-4 pt-4 text-sm">
+        <p class="">934-206 Web programming</p>
+        <p>Prince of Songkla Univeristy, Surat Thani Campus</p>
+        <p>@Copyright: Pattaraporn Warintarawej 2025</p>
+      </div>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
+
+<script>
+  var cards = document.getElementById("cards");
+  const requestOptions = {
+    method: "GET",
+    redirect: "follow",
+  };
+
+  fetch("http://localhost/php_tailwindcss_crud/src/read.php", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      cards.innerHTML = "";
+      var jsonObj = JSON.parse(result);
+      for (let shoe of jsonObj) {
+        const card =
+          `<div class="rounded-2xl p-4 bg-white border-gray-200 shadow-lg overflow-hidden relative text-center">
+            <img
+              class="max-h-48 w-1/2 object-cover mx-auto"
+              src="product_display/` +
+          shoe.image_name +
+          `" alt=` +
+          shoe.name +
+          `/>
+            <h3 class="text-xl font-bold text-center p-3">` +
+          shoe.name +
+          `</h3>
+            <p class="text-center p-2 text-xs text-truncate">` +
+          shoe.desc +
+          `...</p>
+            <a
+              href="shoe.html?id=` +
+          shoe.id +
+          `"
+              class="text-sm text-center py-2 px-4 rounded-lg btn bg-blue-500 text-white hover:bg-yellow-400 hover:text-white"
+              >See More</a
+            >
+          </div>`;
+        console.log(shoe);
+        cards.insertAdjacentHTML("beforeend", card);
+      }
+    })
+    .catch((error) => console.error(error));
+</script>

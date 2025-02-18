@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PHP CRUD Project: PDO and API</title>
+    <link rel="stylesheet" href="./output.css" />
+  </head>
+  <body class="bg-gray-100 dark:bg-gray-800 font-body">
+    <div class="container mx-auto">
+      <div class="py-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col md:flex-row -mx-4">
+            <div class="md:flex-1 px-4">
+              <div class="h-[460px] rounded-lg bg-gray-300 mb-4">
+                <img
+                  id="shoe_image"
+                  class="w-full h-full object-cover"
+                  src=""
+                  alt="Product Image"
+                />
+              </div>
+              <div class="flex -mx-2 mb-4">
+                <div class="w-1/2 px-2">
+                  <button
+                    class="w-full bg-ocean text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+                <div class="w-1/2 px-2">
+                  <button
+                    class="w-full bg-gray-200 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300"
+                  >
+                    Add to Wishlist
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="md:flex-1 px-4 mt-3">
+              <h2 class="text-3xl font-bold text-ocean font-anton" id="name">
+                Product Name
+              </h2>
+
+              <div class="flex mb-4 mt-4">
+                <div class="mr-4">
+                  <span class="font-bold text-gray-700">Price:</span>
+                  <span class="text-gray-600" id="price">$29.99</span>
+                </div>
+                <div>
+                  <span class="font-bold text-gray-700">Availability:</span>
+                  <span class="text-gray-600 dark:text-gray-300" id="stock"
+                    >In Stock</span
+                  >
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <span class="font-bold text-gray-700 dark:text-gray-300"
+                  >Size:
+                </span>
+                <span class="text-gray-600 dark:text-gray-300" id="size"></span>
+              </div>
+              <div>
+                <span class="font-bold text-gray-700"
+                  >Product Description:</span
+                >
+                <p class="text-gray-600 text-sm mb-4" id="desc">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  sed ante justo. Integer euismod libero id mauris malesuada
+                  tincidunt.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  const url_params = new URLSearchParams(window.location.search);
+  const id = url_params.get("id");
+  console.log(id);
+  const requestOptions = {
+    method: "GET",
+    redirect: "follow",
+  };
+
+  fetch(
+    "http://localhost/php_tailwindcss_crud/src/readone.php?id=" + id,
+    requestOptions
+  )
+    .then((response) => response.text())
+    .then((result) => {
+      var jsobObj = JSON.parse(result);
+      console.log(jsobObj);
+      document.getElementById("name").innerText = jsobObj.name;
+      document
+        .getElementById("shoe_image")
+        .setAttribute("src", "product_display/" + jsobObj.image_name);
+      document.getElementById("desc").innerText = jsobObj.desc;
+
+      // Define the formatting options
+      var options = {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+        style: "currency",
+        currency: "THB",
+      };
+
+      // Create an instance of the Intl.NumberFormat object
+      var formatter = new Intl.NumberFormat("en-IN", options);
+
+      // Format the number using the format() method
+      var formattedNum = formatter.format(jsobObj.price);
+
+      document.getElementById("price").innerText = formattedNum;
+      document.getElementById("stock").innerText = jsobObj.stock;
+      document.getElementById("size").innerText = jsobObj.size;
+    })
+    .catch((error) => console.error(error));
+</script>
