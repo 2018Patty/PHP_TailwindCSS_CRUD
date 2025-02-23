@@ -116,23 +116,28 @@
 </html>
 
 <script>
-  var cards = document.getElementById("cards");
+  // var cards = document.getElementById("cards");
+  var cards = document.querySelector("#cards");
   const requestOptions = {
     method: "GET",
     redirect: "follow",
   };
 
-  fetch("http://localhost/php_tailwindcss_crud/src/read.php", requestOptions)
+  fetch(
+    "http://localhost/php_tailwindcss_crud/src/api/read.php",
+    requestOptions
+  )
     .then((response) => response.text())
     .then((result) => {
       cards.innerHTML = "";
       var jsonObj = JSON.parse(result);
+
       for (let shoe of jsonObj) {
         const card =
           `<div class="rounded-2xl p-4 bg-white border-gray-200 shadow-lg overflow-hidden relative text-center">
             <img
               class="max-h-48 w-1/2 object-cover mx-auto"
-              src="product_display/` +
+              src="./product_display/` +
           shoe.image_name +
           `" alt=` +
           shoe.name +
@@ -144,7 +149,7 @@
           shoe.desc +
           `...</p>
             <a
-              href="shoe.html?id=` +
+              href="./shoe.html?id=` +
           shoe.id +
           `"
               class="text-sm text-center py-2 px-4 rounded-lg btn bg-blue-500 text-white hover:bg-yellow-400 hover:text-white"

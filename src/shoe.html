@@ -89,7 +89,7 @@
   };
 
   fetch(
-    "http://localhost/php_tailwindcss_crud/src/readone.php?id=" + id,
+    "http://localhost/php_tailwindcss_crud/src/api/readone.php?id=" + id,
     requestOptions
   )
     .then((response) => response.text())
@@ -99,7 +99,7 @@
       document.getElementById("name").innerText = jsobObj.name;
       document
         .getElementById("shoe_image")
-        .setAttribute("src", "product_display/" + jsobObj.image_name);
+        .setAttribute("src", "./product_display/" + jsobObj.image_name);
       document.getElementById("desc").innerText = jsobObj.desc;
 
       // Define the formatting options

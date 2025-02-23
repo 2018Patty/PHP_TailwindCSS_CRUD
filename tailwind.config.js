@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,js}"],
+  content: ["./src/**/*.{html,js,php}"],
   theme: {
     extend: {
       colors: {
@@ -9,6 +9,7 @@ module.exports = {
       fontFamily: {
         body: ["Montserrat"],
         anton: ["Anton"],
+        anuphan: ["Anuphan"],
       },
     },
   },
