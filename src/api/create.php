@@ -1,9 +1,8 @@
 <?php
-// header("Access-Control-Allow-Origin: *");
-// header("Content-type: applicaiton/json; charset=UTF-8");
+header("Access-Control-Allow-Origin: *");
+header("Content-type: applicaiton/json; charset=UTF-8");
 // use the connection here
 require_once 'db.php';
-
 
 $data = json_decode(file_get_contents("php://input"));
 
@@ -11,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(array("status" => "error"));
     die();
 }
-
 
 try {
 

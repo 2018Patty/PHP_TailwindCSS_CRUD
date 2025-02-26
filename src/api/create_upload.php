@@ -19,6 +19,7 @@ $size  = isset($_POST['product_size']) ? $_POST['product_size'] : '';
 $price = isset($_POST['product_price']) ? $_POST['product_price'] : 0;
 $stock = isset($_POST['product_instock']) ? $_POST['product_instock'] : 0;
 
+// Upload file Start
 $originalFileName = basename($_FILES['product_pic']['name']);
 $fileExtension = pathinfo($originalFileName, PATHINFO_EXTENSION);
 $newFileName = uniqid('shoe_', true) . '.' . $fileExtension;
@@ -101,7 +102,7 @@ if ($uploadOk == 0) {
         die();
     }
 }
-
+// End Upload file
 echo $uploadOk;
 if ($uploadOk == 1) {
     try {

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="./output.css" />
+  </head>
+  <body class="font-anuphan text-sm text-gray-900">
+    <div
+      class="grid grid-cols-1 p-5 mt-10 w-[500px] mx-auto rounded-lg shadow-lg border"
+    >
+      <h1 class="my-5 text-center text-2xl font-medium">Login Form</h1>
+      <form onsubmit="return false" action="" class="">
+        <div class="col-span-full">
+          <label for="username" class="block text-xl">Username</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            class="block w-full border rounded py-1.5 text-base px-2"
+          />
+        </div>
+        <div class="mt-5 col-span-full">
+          <label for="password" class="block text-xl">Password</label>
+          <input
+            type="text"
+            name="password"
+            id="password"
+            class="block w-full border rounded py-1.5 text-base px-2"
+          />
+        </div>
+
+        <div class="flex justify-end gap-2 mt-5">
+          <button
+            type="submit"
+            class="rounded px-2 py-1.5 bg-blue-200"
+            onclick="checklogin()"
+          >
+            Login
+          </button>
+          <button type="reset" class="rounded px-2 py-1.5 bg-red-200">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
+<script>
+  var checklogin = function () {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      username: document.getElementById("username").value,
+      password: document.getElementById("password").value,
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(
+      "http://localhost/php_tailwindcss_crud/src/api/checklogin.php",
+      requestOptions
+    )
+      .then((response) => response.text())
+      .then((result) => {
+        var jsonObj = JSON.parse(result);
+        if (jsonObj.status) {
+          alert("ok");
+          window.open("admin_product.php");
+        } else {
+          alert(jsonObj.message);
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+</script>
