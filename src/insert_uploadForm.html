@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Upload</title>
+  </head>
+  <body>
+    <form id="productForm" method="post" enctype="multipart/form-data">
+      <label>Product Name</label>
+      <input type="text" name="product_name" id="product_name" required />
+
+      <label>Product Description</label>
+      <textarea name="product_desc" id="product_desc" required></textarea>
+
+      <label>Product Size</label>
+      <input type="text" name="product_size" id="product_size" required />
+
+      <label>Price</label>
+      <input type="number" name="product_price" id="product_price" required />
+
+      <label>In Stock</label>
+      <input
+        type="number"
+        name="product_instock"
+        id="product_instock"
+        required
+      />
+
+      <label>Product Image</label>
+      <input type="file" name="product_pic" id="product_pic" required />
+
+      <button type="submit">Save</button>
+    </form>
+  </body>
+</html>
+<script>
+  document
+    .getElementById("productForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      let formData = new FormData(this); // ดึงข้อมูลทั้งหมดจากฟอร์ม
+
+      // Debug ข้อมูลที่อยู่ใน formData
+      console.log("==== FormData Debugging ====");
+
+      // แสดงค่าทั้งหมดที่อยู่ใน FormData
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
+
+      let fileInput = document.getElementById("product_pic");
+      console.log("Selected file:", fileInput.files[0]);
+
+      fetch(
+        "http://127.0.0.1/php_tailwindcss_crud/src/api/create_upload_api.php",
+        {
+          method: "POST",
+          body: formData,
+        }
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result); // ตรวจสอบค่าที่ส่งกลับมาจาก PHP
+          if (result.status === "ok") {
+            alert("Product uploaded successfully!");
+            this.reset(); // ล้างฟอร์มหลังจากอัปโหลดสำเร็จ
+          } else {
+            alert("Error: " + result.message);
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    });
+</script>

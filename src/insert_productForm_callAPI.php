@@ -15,7 +15,7 @@
         include_once('header.html');
         ?>
 
-        <form onsubmit="" method="post" action="api/create_upload.php" enctype="multipart/form-data">
+        <form onsubmit="" method="post" action="" enctype="multipart/form-data" id="productForm">
             <div class="mt-5 border rounded-lg shadow w-1/2 space-y-12 mx-auto p-3">
                 <div class="pb-5">
                     <h2 class="text-2xl text-center font-semibold text-gray-900">Add New Product</h2>
@@ -103,7 +103,7 @@
                     </div>
                     <div class="mt-10 flex items-center justify-end gap-x-6">
                         <button type="button" class="text-sm/6 font-semibold text-gray-900">Cancel</button>
-                        <button type="submit" onclick=""
+                        <button type="submit" onclick="product_create()"
                             class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
                     </div>
                 </div>
@@ -121,6 +121,28 @@
 
 </html>
 <script>
+document.getElementById("productForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    let formData = new FormData(this);
+
+    fetch("http://localhost/php_tailwindcss_crud/src/api/create_upload_api.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.status === "ok") {
+                alert("Product uploaded successfully!");
+                this.reset(); // ล้างฟอร์ม
+                window.open('admin_product.php');
+            } else {
+                alert("Error: " + result.message);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+});
+
 var product_create = function() {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -142,13 +164,13 @@ var product_create = function() {
         redirect: "follow"
     };
 
-    fetch("http://localhost/php_tailwindcss_crud/src/api/create.php", requestOptions)
+    fetch("http://localhost/php_tailwindcss_crud/src/api/create_upload_api.php", requestOptions)
         .then((response) => response.text())
         .then((result) => {
             var jsonObj = JSON.parse(result);
             if (jsonObj.status == 'ok') {
                 alert('ok');
-                window.open('index.html');
+                //window.open('index.html');
             } else {
                 alert('error');
             }

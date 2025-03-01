@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin : Customer</title>
+    <link rel="stylesheet" href="./output.css" />
+  </head>
+  <body onload="customer_read()">
+    <div class="mt-10 container mx-auto">
+      <table class="w-full">
+        <thead class="bg-gray-200 border-b-2 border-gray-400 ">
+          <tr>
+            <td class"p-3">Customer ID</td>
+            <td class"p-3">Customer Name</td>
+            <td class"p-3">Address</td>
+            <td class"p-3">Username</td>
+            <td class"p-3">Update</td>
+            <td class"p-3">Delete</td>
+          </tr>
+        </thead>
+        <tbody class="border-2 border-gray-400" id="customerTable">
+          <tr>
+            <td class"p-3">100</td>
+            <td class"p-3">Peter</td>
+            <td class"p-3">31 Moo 6 Makamtia</td>
+            <td class"p-3">peter</td>
+            <td><button class="px-3 py-2 bg-blue-200 rounded-lg">Update</button></td>
+            <td><button class="px-3 py-2 bg-red-200 rounded-lg">Delete</button></td>
+          </tr>
+          <tr>
+            <td>101</td>
+            <td>Marry</td>
+            <td>31 Moo 6 Makamtia</td>
+            <td>peter</td>
+            <td><button class="px-3 py-2 bg-blue-200 rounded-lg">Update</button></td>
+            <td><button class="px-3 py-2 bg-red-200 rounded-lg">Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+  </body>
+</html>
+<script>
+  var customer_read = function(){
+    const requestOptions = {
+    method: "GET",
+    redirect: "follow"
+  };
+  
+  var customer_table = document.getElementById('customerTable');
+  fetch("http://localhost/php_tailwindcss_crud/src/api/readCustomer.php", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      console.log(result);
+      var customers = JSON.parse(result);
+      trHTML = "";
+      for(let customer of customers){
+          trHTML += `<tr>
+            <td class"p-3">`+customer.id +`</td>
+            <td class"p-3">`+customer.name+`</td>
+            <td class"p-3">`+customer.address+`</td>
+            <td class"p-3">`+customer.username+`</td>
+            <td><button class="px-3 py-2 bg-blue-200 rounded-lg">Update</button></td>
+            <td><button class="px-3 py-2 bg-red-200 rounded-lg">Delete</button></td>
+          </tr>`
+      }
+      customer_table.innerHTML =trHTML;
+
+    })
+    .catch((error) => console.error(error));
+  }
+  
+  </script>

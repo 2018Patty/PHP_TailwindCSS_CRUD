@@ -1,6 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-header("Content-type: applicaiton/json; charset=UTF-8");
+header("Content-type: applicaition/json; charset=UTF-8");
 // use the connection here
 require_once 'db.php';
 
